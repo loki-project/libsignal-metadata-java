@@ -110,12 +110,16 @@ public class SealedSessionCipher {
       {
         throw new SelfSendException();
       }
-    } catch (InvalidKeyException | InvalidMacException | InvalidCertificateException e) {
+    } catch (InvalidKeyException e) {
+      throw new InvalidMetadataMessageException(e);
+    } catch (InvalidMacException e) {
+      throw new InvalidMetadataMessageException(e);
+    } catch (InvalidCertificateException e) {
       throw new InvalidMetadataMessageException(e);
     }
 
     try {
-      return new Pair<>(new SignalProtocolAddress(content.getSenderCertificate().getSender(),
+      return new Pair<SignalProtocolAddress, byte[]>(new SignalProtocolAddress(content.getSenderCertificate().getSender(),
                                                   content.getSenderCertificate().getSenderDeviceId()),
                         decrypt(content));
     } catch (InvalidMessageException e) {
@@ -195,7 +199,17 @@ public class SealedSessionCipher {
       byte[] ourMac     = ByteUtil.trim(ourFullMac, 10);
 
       return ByteUtil.combine(ciphertext, ourMac);
-    } catch (NoSuchAlgorithmException | NoSuchPaddingException | java.security.InvalidKeyException | BadPaddingException | IllegalBlockSizeException | InvalidAlgorithmParameterException e) {
+    } catch (NoSuchAlgorithmException e) {
+      throw new AssertionError(e);
+    } catch (NoSuchPaddingException e) {
+      throw new AssertionError(e);
+    } catch (java.security.InvalidKeyException e) {
+      throw new AssertionError(e);
+    } catch (BadPaddingException e) {
+      throw new AssertionError(e);
+    } catch (IllegalBlockSizeException e) {
+      throw new AssertionError(e);
+    } catch (InvalidAlgorithmParameterException e) {
       throw new AssertionError(e);
     }
   }
@@ -223,7 +237,17 @@ public class SealedSessionCipher {
       cipher.init(Cipher.DECRYPT_MODE, cipherKey, new IvParameterSpec(new byte[16]));
 
       return cipher.doFinal(ciphertextParts[0]);
-    } catch (NoSuchAlgorithmException | java.security.InvalidKeyException | NoSuchPaddingException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
+    } catch (NoSuchAlgorithmException e) {
+      throw new AssertionError(e);
+    } catch (java.security.InvalidKeyException e) {
+      throw new AssertionError(e);
+    } catch (NoSuchPaddingException e) {
+      throw new AssertionError(e);
+    } catch (InvalidAlgorithmParameterException e) {
+      throw new AssertionError(e);
+    } catch (IllegalBlockSizeException e) {
+      throw new AssertionError(e);
+    } catch (BadPaddingException e) {
       throw new AssertionError(e);
     }
   }

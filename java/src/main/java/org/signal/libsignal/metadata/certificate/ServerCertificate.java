@@ -37,7 +37,9 @@ public class ServerCertificate {
       this.certificate = wrapper.getCertificate().toByteArray();
       this.signature   = wrapper.getSignature().toByteArray();
 
-    } catch (InvalidProtocolBufferException | InvalidKeyException e) {
+    } catch (InvalidProtocolBufferException e) {
+      throw new InvalidCertificateException(e);
+    } catch (InvalidKeyException e) {
       throw new InvalidCertificateException(e);
     }
   }

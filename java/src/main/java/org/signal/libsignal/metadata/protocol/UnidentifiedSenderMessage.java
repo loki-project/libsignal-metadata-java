@@ -4,7 +4,6 @@ package org.signal.libsignal.metadata.protocol;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 
-import org.omg.CORBA.DynAnyPackage.Invalid;
 import org.signal.libsignal.metadata.InvalidMetadataMessageException;
 import org.signal.libsignal.metadata.InvalidMetadataVersionException;
 import org.signal.libsignal.metadata.SignalProtos;
@@ -48,7 +47,9 @@ public class UnidentifiedSenderMessage {
       this.encryptedStatic  = unidentifiedSenderMessage.getEncryptedStatic().toByteArray();
       this.encryptedMessage = unidentifiedSenderMessage.getEncryptedMessage().toByteArray();
       this.serialized       = serialized;
-    } catch (InvalidProtocolBufferException | InvalidKeyException e) {
+    } catch (InvalidProtocolBufferException e) {
+      throw new InvalidMetadataMessageException(e);
+    } catch (InvalidKeyException e) {
       throw new InvalidMetadataMessageException(e);
     }
   }
