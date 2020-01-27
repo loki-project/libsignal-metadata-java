@@ -974,25 +974,30 @@ public final class SignalProtos {
   public interface SenderCertificateOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // optional bytes certificate = 1;
+    // optional string sender = 1;
     /**
-     * <code>optional bytes certificate = 1;</code>
+     * <code>optional string sender = 1;</code>
      */
-    boolean hasCertificate();
+    boolean hasSender();
     /**
-     * <code>optional bytes certificate = 1;</code>
+     * <code>optional string sender = 1;</code>
      */
-    com.google.protobuf.ByteString getCertificate();
+    java.lang.String getSender();
+    /**
+     * <code>optional string sender = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getSenderBytes();
 
-    // optional bytes signature = 2;
+    // optional uint32 senderDevice = 2;
     /**
-     * <code>optional bytes signature = 2;</code>
+     * <code>optional uint32 senderDevice = 2;</code>
      */
-    boolean hasSignature();
+    boolean hasSenderDevice();
     /**
-     * <code>optional bytes signature = 2;</code>
+     * <code>optional uint32 senderDevice = 2;</code>
      */
-    com.google.protobuf.ByteString getSignature();
+    int getSenderDevice();
   }
   /**
    * Protobuf type {@code signal.SenderCertificate}
@@ -1047,12 +1052,12 @@ public final class SignalProtos {
             }
             case 10: {
               bitField0_ |= 0x00000001;
-              certificate_ = input.readBytes();
+              sender_ = input.readBytes();
               break;
             }
-            case 18: {
+            case 16: {
               bitField0_ |= 0x00000002;
-              signature_ = input.readBytes();
+              senderDevice_ = input.readUInt32();
               break;
             }
           }
@@ -1094,951 +1099,69 @@ public final class SignalProtos {
       return PARSER;
     }
 
-    public interface CertificateOrBuilder
-        extends com.google.protobuf.MessageOrBuilder {
-
-      // optional string sender = 1;
-      /**
-       * <code>optional string sender = 1;</code>
-       */
-      boolean hasSender();
-      /**
-       * <code>optional string sender = 1;</code>
-       */
-      java.lang.String getSender();
-      /**
-       * <code>optional string sender = 1;</code>
-       */
-      com.google.protobuf.ByteString
-          getSenderBytes();
-
-      // optional uint32 senderDevice = 2;
-      /**
-       * <code>optional uint32 senderDevice = 2;</code>
-       */
-      boolean hasSenderDevice();
-      /**
-       * <code>optional uint32 senderDevice = 2;</code>
-       */
-      int getSenderDevice();
-
-      // optional fixed64 expires = 3;
-      /**
-       * <code>optional fixed64 expires = 3;</code>
-       */
-      boolean hasExpires();
-      /**
-       * <code>optional fixed64 expires = 3;</code>
-       */
-      long getExpires();
-
-      // optional bytes identityKey = 4;
-      /**
-       * <code>optional bytes identityKey = 4;</code>
-       */
-      boolean hasIdentityKey();
-      /**
-       * <code>optional bytes identityKey = 4;</code>
-       */
-      com.google.protobuf.ByteString getIdentityKey();
-
-      // optional .signal.ServerCertificate signer = 5;
-      /**
-       * <code>optional .signal.ServerCertificate signer = 5;</code>
-       */
-      boolean hasSigner();
-      /**
-       * <code>optional .signal.ServerCertificate signer = 5;</code>
-       */
-      org.signal.libsignal.metadata.SignalProtos.ServerCertificate getSigner();
-      /**
-       * <code>optional .signal.ServerCertificate signer = 5;</code>
-       */
-      org.signal.libsignal.metadata.SignalProtos.ServerCertificateOrBuilder getSignerOrBuilder();
-    }
-    /**
-     * Protobuf type {@code signal.SenderCertificate.Certificate}
-     */
-    public static final class Certificate extends
-        com.google.protobuf.GeneratedMessage
-        implements CertificateOrBuilder {
-      // Use Certificate.newBuilder() to construct.
-      private Certificate(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-        super(builder);
-        this.unknownFields = builder.getUnknownFields();
-      }
-      private Certificate(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-      private static final Certificate defaultInstance;
-      public static Certificate getDefaultInstance() {
-        return defaultInstance;
-      }
-
-      public Certificate getDefaultInstanceForType() {
-        return defaultInstance;
-      }
-
-      private final com.google.protobuf.UnknownFieldSet unknownFields;
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-          getUnknownFields() {
-        return this.unknownFields;
-      }
-      private Certificate(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        initFields();
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-            com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-          boolean done = false;
-          while (!done) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                done = true;
-                break;
-              default: {
-                if (!parseUnknownField(input, unknownFields,
-                                       extensionRegistry, tag)) {
-                  done = true;
-                }
-                break;
-              }
-              case 10: {
-                bitField0_ |= 0x00000001;
-                sender_ = input.readBytes();
-                break;
-              }
-              case 16: {
-                bitField0_ |= 0x00000002;
-                senderDevice_ = input.readUInt32();
-                break;
-              }
-              case 25: {
-                bitField0_ |= 0x00000004;
-                expires_ = input.readFixed64();
-                break;
-              }
-              case 34: {
-                bitField0_ |= 0x00000008;
-                identityKey_ = input.readBytes();
-                break;
-              }
-              case 42: {
-                org.signal.libsignal.metadata.SignalProtos.ServerCertificate.Builder subBuilder = null;
-                if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                  subBuilder = signer_.toBuilder();
-                }
-                signer_ = input.readMessage(org.signal.libsignal.metadata.SignalProtos.ServerCertificate.PARSER, extensionRegistry);
-                if (subBuilder != null) {
-                  subBuilder.mergeFrom(signer_);
-                  signer_ = subBuilder.buildPartial();
-                }
-                bitField0_ |= 0x00000010;
-                break;
-              }
-            }
-          }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e.getMessage()).setUnfinishedMessage(this);
-        } finally {
-          this.unknownFields = unknownFields.build();
-          makeExtensionsImmutable();
-        }
-      }
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.signal.libsignal.metadata.SignalProtos.internal_static_signal_SenderCertificate_Certificate_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.signal.libsignal.metadata.SignalProtos.internal_static_signal_SenderCertificate_Certificate_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate.class, org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate.Builder.class);
-      }
-
-      public static com.google.protobuf.Parser<Certificate> PARSER =
-          new com.google.protobuf.AbstractParser<Certificate>() {
-        public Certificate parsePartialFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Certificate(input, extensionRegistry);
-        }
-      };
-
-      @java.lang.Override
-      public com.google.protobuf.Parser<Certificate> getParserForType() {
-        return PARSER;
-      }
-
-      private int bitField0_;
-      // optional string sender = 1;
-      public static final int SENDER_FIELD_NUMBER = 1;
-      private java.lang.Object sender_;
-      /**
-       * <code>optional string sender = 1;</code>
-       */
-      public boolean hasSender() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional string sender = 1;</code>
-       */
-      public java.lang.String getSender() {
-        java.lang.Object ref = sender_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            sender_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>optional string sender = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getSenderBytes() {
-        java.lang.Object ref = sender_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          sender_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      // optional uint32 senderDevice = 2;
-      public static final int SENDERDEVICE_FIELD_NUMBER = 2;
-      private int senderDevice_;
-      /**
-       * <code>optional uint32 senderDevice = 2;</code>
-       */
-      public boolean hasSenderDevice() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional uint32 senderDevice = 2;</code>
-       */
-      public int getSenderDevice() {
-        return senderDevice_;
-      }
-
-      // optional fixed64 expires = 3;
-      public static final int EXPIRES_FIELD_NUMBER = 3;
-      private long expires_;
-      /**
-       * <code>optional fixed64 expires = 3;</code>
-       */
-      public boolean hasExpires() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional fixed64 expires = 3;</code>
-       */
-      public long getExpires() {
-        return expires_;
-      }
-
-      // optional bytes identityKey = 4;
-      public static final int IDENTITYKEY_FIELD_NUMBER = 4;
-      private com.google.protobuf.ByteString identityKey_;
-      /**
-       * <code>optional bytes identityKey = 4;</code>
-       */
-      public boolean hasIdentityKey() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional bytes identityKey = 4;</code>
-       */
-      public com.google.protobuf.ByteString getIdentityKey() {
-        return identityKey_;
-      }
-
-      // optional .signal.ServerCertificate signer = 5;
-      public static final int SIGNER_FIELD_NUMBER = 5;
-      private org.signal.libsignal.metadata.SignalProtos.ServerCertificate signer_;
-      /**
-       * <code>optional .signal.ServerCertificate signer = 5;</code>
-       */
-      public boolean hasSigner() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>optional .signal.ServerCertificate signer = 5;</code>
-       */
-      public org.signal.libsignal.metadata.SignalProtos.ServerCertificate getSigner() {
-        return signer_;
-      }
-      /**
-       * <code>optional .signal.ServerCertificate signer = 5;</code>
-       */
-      public org.signal.libsignal.metadata.SignalProtos.ServerCertificateOrBuilder getSignerOrBuilder() {
-        return signer_;
-      }
-
-      private void initFields() {
-        sender_ = "";
-        senderDevice_ = 0;
-        expires_ = 0L;
-        identityKey_ = com.google.protobuf.ByteString.EMPTY;
-        signer_ = org.signal.libsignal.metadata.SignalProtos.ServerCertificate.getDefaultInstance();
-      }
-      private byte memoizedIsInitialized = -1;
-      public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (isInitialized != -1) return isInitialized == 1;
-
-        memoizedIsInitialized = 1;
-        return true;
-      }
-
-      public void writeTo(com.google.protobuf.CodedOutputStream output)
-                          throws java.io.IOException {
-        getSerializedSize();
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          output.writeBytes(1, getSenderBytes());
-        }
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          output.writeUInt32(2, senderDevice_);
-        }
-        if (((bitField0_ & 0x00000004) == 0x00000004)) {
-          output.writeFixed64(3, expires_);
-        }
-        if (((bitField0_ & 0x00000008) == 0x00000008)) {
-          output.writeBytes(4, identityKey_);
-        }
-        if (((bitField0_ & 0x00000010) == 0x00000010)) {
-          output.writeMessage(5, signer_);
-        }
-        getUnknownFields().writeTo(output);
-      }
-
-      private int memoizedSerializedSize = -1;
-      public int getSerializedSize() {
-        int size = memoizedSerializedSize;
-        if (size != -1) return size;
-
-        size = 0;
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(1, getSenderBytes());
-        }
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeUInt32Size(2, senderDevice_);
-        }
-        if (((bitField0_ & 0x00000004) == 0x00000004)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeFixed64Size(3, expires_);
-        }
-        if (((bitField0_ & 0x00000008) == 0x00000008)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(4, identityKey_);
-        }
-        if (((bitField0_ & 0x00000010) == 0x00000010)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(5, signer_);
-        }
-        size += getUnknownFields().getSerializedSize();
-        memoizedSerializedSize = size;
-        return size;
-      }
-
-      private static final long serialVersionUID = 0L;
-      @java.lang.Override
-      protected java.lang.Object writeReplace()
-          throws java.io.ObjectStreamException {
-        return super.writeReplace();
-      }
-
-      public static org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate parseFrom(
-          com.google.protobuf.ByteString data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate parseFrom(
-          com.google.protobuf.ByteString data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate parseFrom(byte[] data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate parseFrom(
-          byte[] data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate parseFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return PARSER.parseFrom(input);
-      }
-      public static org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate parseFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return PARSER.parseFrom(input, extensionRegistry);
-      }
-      public static org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate parseDelimitedFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return PARSER.parseDelimitedFrom(input);
-      }
-      public static org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate parseDelimitedFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return PARSER.parseDelimitedFrom(input, extensionRegistry);
-      }
-      public static org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate parseFrom(
-          com.google.protobuf.CodedInputStream input)
-          throws java.io.IOException {
-        return PARSER.parseFrom(input);
-      }
-      public static org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate parseFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return PARSER.parseFrom(input, extensionRegistry);
-      }
-
-      public static Builder newBuilder() { return Builder.create(); }
-      public Builder newBuilderForType() { return newBuilder(); }
-      public static Builder newBuilder(org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate prototype) {
-        return newBuilder().mergeFrom(prototype);
-      }
-      public Builder toBuilder() { return newBuilder(this); }
-
-      @java.lang.Override
-      protected Builder newBuilderForType(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-      }
-      /**
-       * Protobuf type {@code signal.SenderCertificate.Certificate}
-       */
-      public static final class Builder extends
-          com.google.protobuf.GeneratedMessage.Builder<Builder>
-         implements org.signal.libsignal.metadata.SignalProtos.SenderCertificate.CertificateOrBuilder {
-        public static final com.google.protobuf.Descriptors.Descriptor
-            getDescriptor() {
-          return org.signal.libsignal.metadata.SignalProtos.internal_static_signal_SenderCertificate_Certificate_descriptor;
-        }
-
-        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-            internalGetFieldAccessorTable() {
-          return org.signal.libsignal.metadata.SignalProtos.internal_static_signal_SenderCertificate_Certificate_fieldAccessorTable
-              .ensureFieldAccessorsInitialized(
-                  org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate.class, org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate.Builder.class);
-        }
-
-        // Construct using org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate.newBuilder()
-        private Builder() {
-          maybeForceBuilderInitialization();
-        }
-
-        private Builder(
-            com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-          super(parent);
-          maybeForceBuilderInitialization();
-        }
-        private void maybeForceBuilderInitialization() {
-          if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-            getSignerFieldBuilder();
-          }
-        }
-        private static Builder create() {
-          return new Builder();
-        }
-
-        public Builder clear() {
-          super.clear();
-          sender_ = "";
-          bitField0_ = (bitField0_ & ~0x00000001);
-          senderDevice_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000002);
-          expires_ = 0L;
-          bitField0_ = (bitField0_ & ~0x00000004);
-          identityKey_ = com.google.protobuf.ByteString.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000008);
-          if (signerBuilder_ == null) {
-            signer_ = org.signal.libsignal.metadata.SignalProtos.ServerCertificate.getDefaultInstance();
-          } else {
-            signerBuilder_.clear();
-          }
-          bitField0_ = (bitField0_ & ~0x00000010);
-          return this;
-        }
-
-        public Builder clone() {
-          return create().mergeFrom(buildPartial());
-        }
-
-        public com.google.protobuf.Descriptors.Descriptor
-            getDescriptorForType() {
-          return org.signal.libsignal.metadata.SignalProtos.internal_static_signal_SenderCertificate_Certificate_descriptor;
-        }
-
-        public org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate getDefaultInstanceForType() {
-          return org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate.getDefaultInstance();
-        }
-
-        public org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate build() {
-          org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate result = buildPartial();
-          if (!result.isInitialized()) {
-            throw newUninitializedMessageException(result);
-          }
-          return result;
-        }
-
-        public org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate buildPartial() {
-          org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate result = new org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate(this);
-          int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
-          if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-            to_bitField0_ |= 0x00000001;
-          }
-          result.sender_ = sender_;
-          if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-            to_bitField0_ |= 0x00000002;
-          }
-          result.senderDevice_ = senderDevice_;
-          if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-            to_bitField0_ |= 0x00000004;
-          }
-          result.expires_ = expires_;
-          if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-            to_bitField0_ |= 0x00000008;
-          }
-          result.identityKey_ = identityKey_;
-          if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-            to_bitField0_ |= 0x00000010;
-          }
-          if (signerBuilder_ == null) {
-            result.signer_ = signer_;
-          } else {
-            result.signer_ = signerBuilder_.build();
-          }
-          result.bitField0_ = to_bitField0_;
-          onBuilt();
-          return result;
-        }
-
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-          if (other instanceof org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate) {
-            return mergeFrom((org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate)other);
-          } else {
-            super.mergeFrom(other);
-            return this;
-          }
-        }
-
-        public Builder mergeFrom(org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate other) {
-          if (other == org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate.getDefaultInstance()) return this;
-          if (other.hasSender()) {
-            bitField0_ |= 0x00000001;
-            sender_ = other.sender_;
-            onChanged();
-          }
-          if (other.hasSenderDevice()) {
-            setSenderDevice(other.getSenderDevice());
-          }
-          if (other.hasExpires()) {
-            setExpires(other.getExpires());
-          }
-          if (other.hasIdentityKey()) {
-            setIdentityKey(other.getIdentityKey());
-          }
-          if (other.hasSigner()) {
-            mergeSigner(other.getSigner());
-          }
-          this.mergeUnknownFields(other.getUnknownFields());
-          return this;
-        }
-
-        public final boolean isInitialized() {
-          return true;
-        }
-
-        public Builder mergeFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate parsedMessage = null;
-          try {
-            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (org.signal.libsignal.metadata.SignalProtos.SenderCertificate.Certificate) e.getUnfinishedMessage();
-            throw e;
-          } finally {
-            if (parsedMessage != null) {
-              mergeFrom(parsedMessage);
-            }
-          }
-          return this;
-        }
-        private int bitField0_;
-
-        // optional string sender = 1;
-        private java.lang.Object sender_ = "";
-        /**
-         * <code>optional string sender = 1;</code>
-         */
-        public boolean hasSender() {
-          return ((bitField0_ & 0x00000001) == 0x00000001);
-        }
-        /**
-         * <code>optional string sender = 1;</code>
-         */
-        public java.lang.String getSender() {
-          java.lang.Object ref = sender_;
-          if (!(ref instanceof java.lang.String)) {
-            java.lang.String s = ((com.google.protobuf.ByteString) ref)
-                .toStringUtf8();
-            sender_ = s;
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <code>optional string sender = 1;</code>
-         */
-        public com.google.protobuf.ByteString
-            getSenderBytes() {
-          java.lang.Object ref = sender_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            sender_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>optional string sender = 1;</code>
-         */
-        public Builder setSender(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-          sender_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string sender = 1;</code>
-         */
-        public Builder clearSender() {
-          bitField0_ = (bitField0_ & ~0x00000001);
-          sender_ = getDefaultInstance().getSender();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional string sender = 1;</code>
-         */
-        public Builder setSenderBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-          sender_ = value;
-          onChanged();
-          return this;
-        }
-
-        // optional uint32 senderDevice = 2;
-        private int senderDevice_ ;
-        /**
-         * <code>optional uint32 senderDevice = 2;</code>
-         */
-        public boolean hasSenderDevice() {
-          return ((bitField0_ & 0x00000002) == 0x00000002);
-        }
-        /**
-         * <code>optional uint32 senderDevice = 2;</code>
-         */
-        public int getSenderDevice() {
-          return senderDevice_;
-        }
-        /**
-         * <code>optional uint32 senderDevice = 2;</code>
-         */
-        public Builder setSenderDevice(int value) {
-          bitField0_ |= 0x00000002;
-          senderDevice_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional uint32 senderDevice = 2;</code>
-         */
-        public Builder clearSenderDevice() {
-          bitField0_ = (bitField0_ & ~0x00000002);
-          senderDevice_ = 0;
-          onChanged();
-          return this;
-        }
-
-        // optional fixed64 expires = 3;
-        private long expires_ ;
-        /**
-         * <code>optional fixed64 expires = 3;</code>
-         */
-        public boolean hasExpires() {
-          return ((bitField0_ & 0x00000004) == 0x00000004);
-        }
-        /**
-         * <code>optional fixed64 expires = 3;</code>
-         */
-        public long getExpires() {
-          return expires_;
-        }
-        /**
-         * <code>optional fixed64 expires = 3;</code>
-         */
-        public Builder setExpires(long value) {
-          bitField0_ |= 0x00000004;
-          expires_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional fixed64 expires = 3;</code>
-         */
-        public Builder clearExpires() {
-          bitField0_ = (bitField0_ & ~0x00000004);
-          expires_ = 0L;
-          onChanged();
-          return this;
-        }
-
-        // optional bytes identityKey = 4;
-        private com.google.protobuf.ByteString identityKey_ = com.google.protobuf.ByteString.EMPTY;
-        /**
-         * <code>optional bytes identityKey = 4;</code>
-         */
-        public boolean hasIdentityKey() {
-          return ((bitField0_ & 0x00000008) == 0x00000008);
-        }
-        /**
-         * <code>optional bytes identityKey = 4;</code>
-         */
-        public com.google.protobuf.ByteString getIdentityKey() {
-          return identityKey_;
-        }
-        /**
-         * <code>optional bytes identityKey = 4;</code>
-         */
-        public Builder setIdentityKey(com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-          identityKey_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>optional bytes identityKey = 4;</code>
-         */
-        public Builder clearIdentityKey() {
-          bitField0_ = (bitField0_ & ~0x00000008);
-          identityKey_ = getDefaultInstance().getIdentityKey();
-          onChanged();
-          return this;
-        }
-
-        // optional .signal.ServerCertificate signer = 5;
-        private org.signal.libsignal.metadata.SignalProtos.ServerCertificate signer_ = org.signal.libsignal.metadata.SignalProtos.ServerCertificate.getDefaultInstance();
-        private com.google.protobuf.SingleFieldBuilder<
-            org.signal.libsignal.metadata.SignalProtos.ServerCertificate, org.signal.libsignal.metadata.SignalProtos.ServerCertificate.Builder, org.signal.libsignal.metadata.SignalProtos.ServerCertificateOrBuilder> signerBuilder_;
-        /**
-         * <code>optional .signal.ServerCertificate signer = 5;</code>
-         */
-        public boolean hasSigner() {
-          return ((bitField0_ & 0x00000010) == 0x00000010);
-        }
-        /**
-         * <code>optional .signal.ServerCertificate signer = 5;</code>
-         */
-        public org.signal.libsignal.metadata.SignalProtos.ServerCertificate getSigner() {
-          if (signerBuilder_ == null) {
-            return signer_;
-          } else {
-            return signerBuilder_.getMessage();
-          }
-        }
-        /**
-         * <code>optional .signal.ServerCertificate signer = 5;</code>
-         */
-        public Builder setSigner(org.signal.libsignal.metadata.SignalProtos.ServerCertificate value) {
-          if (signerBuilder_ == null) {
-            if (value == null) {
-              throw new NullPointerException();
-            }
-            signer_ = value;
-            onChanged();
-          } else {
-            signerBuilder_.setMessage(value);
-          }
-          bitField0_ |= 0x00000010;
-          return this;
-        }
-        /**
-         * <code>optional .signal.ServerCertificate signer = 5;</code>
-         */
-        public Builder setSigner(
-            org.signal.libsignal.metadata.SignalProtos.ServerCertificate.Builder builderForValue) {
-          if (signerBuilder_ == null) {
-            signer_ = builderForValue.build();
-            onChanged();
-          } else {
-            signerBuilder_.setMessage(builderForValue.build());
-          }
-          bitField0_ |= 0x00000010;
-          return this;
-        }
-        /**
-         * <code>optional .signal.ServerCertificate signer = 5;</code>
-         */
-        public Builder mergeSigner(org.signal.libsignal.metadata.SignalProtos.ServerCertificate value) {
-          if (signerBuilder_ == null) {
-            if (((bitField0_ & 0x00000010) == 0x00000010) &&
-                signer_ != org.signal.libsignal.metadata.SignalProtos.ServerCertificate.getDefaultInstance()) {
-              signer_ =
-                org.signal.libsignal.metadata.SignalProtos.ServerCertificate.newBuilder(signer_).mergeFrom(value).buildPartial();
-            } else {
-              signer_ = value;
-            }
-            onChanged();
-          } else {
-            signerBuilder_.mergeFrom(value);
-          }
-          bitField0_ |= 0x00000010;
-          return this;
-        }
-        /**
-         * <code>optional .signal.ServerCertificate signer = 5;</code>
-         */
-        public Builder clearSigner() {
-          if (signerBuilder_ == null) {
-            signer_ = org.signal.libsignal.metadata.SignalProtos.ServerCertificate.getDefaultInstance();
-            onChanged();
-          } else {
-            signerBuilder_.clear();
-          }
-          bitField0_ = (bitField0_ & ~0x00000010);
-          return this;
-        }
-        /**
-         * <code>optional .signal.ServerCertificate signer = 5;</code>
-         */
-        public org.signal.libsignal.metadata.SignalProtos.ServerCertificate.Builder getSignerBuilder() {
-          bitField0_ |= 0x00000010;
-          onChanged();
-          return getSignerFieldBuilder().getBuilder();
-        }
-        /**
-         * <code>optional .signal.ServerCertificate signer = 5;</code>
-         */
-        public org.signal.libsignal.metadata.SignalProtos.ServerCertificateOrBuilder getSignerOrBuilder() {
-          if (signerBuilder_ != null) {
-            return signerBuilder_.getMessageOrBuilder();
-          } else {
-            return signer_;
-          }
-        }
-        /**
-         * <code>optional .signal.ServerCertificate signer = 5;</code>
-         */
-        private com.google.protobuf.SingleFieldBuilder<
-            org.signal.libsignal.metadata.SignalProtos.ServerCertificate, org.signal.libsignal.metadata.SignalProtos.ServerCertificate.Builder, org.signal.libsignal.metadata.SignalProtos.ServerCertificateOrBuilder> 
-            getSignerFieldBuilder() {
-          if (signerBuilder_ == null) {
-            signerBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-                org.signal.libsignal.metadata.SignalProtos.ServerCertificate, org.signal.libsignal.metadata.SignalProtos.ServerCertificate.Builder, org.signal.libsignal.metadata.SignalProtos.ServerCertificateOrBuilder>(
-                    signer_,
-                    getParentForChildren(),
-                    isClean());
-            signer_ = null;
-          }
-          return signerBuilder_;
-        }
-
-        // @@protoc_insertion_point(builder_scope:signal.SenderCertificate.Certificate)
-      }
-
-      static {
-        defaultInstance = new Certificate(true);
-        defaultInstance.initFields();
-      }
-
-      // @@protoc_insertion_point(class_scope:signal.SenderCertificate.Certificate)
-    }
-
     private int bitField0_;
-    // optional bytes certificate = 1;
-    public static final int CERTIFICATE_FIELD_NUMBER = 1;
-    private com.google.protobuf.ByteString certificate_;
+    // optional string sender = 1;
+    public static final int SENDER_FIELD_NUMBER = 1;
+    private java.lang.Object sender_;
     /**
-     * <code>optional bytes certificate = 1;</code>
+     * <code>optional string sender = 1;</code>
      */
-    public boolean hasCertificate() {
+    public boolean hasSender() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional bytes certificate = 1;</code>
+     * <code>optional string sender = 1;</code>
      */
-    public com.google.protobuf.ByteString getCertificate() {
-      return certificate_;
+    public java.lang.String getSender() {
+      java.lang.Object ref = sender_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          sender_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string sender = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSenderBytes() {
+      java.lang.Object ref = sender_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sender_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
-    // optional bytes signature = 2;
-    public static final int SIGNATURE_FIELD_NUMBER = 2;
-    private com.google.protobuf.ByteString signature_;
+    // optional uint32 senderDevice = 2;
+    public static final int SENDERDEVICE_FIELD_NUMBER = 2;
+    private int senderDevice_;
     /**
-     * <code>optional bytes signature = 2;</code>
+     * <code>optional uint32 senderDevice = 2;</code>
      */
-    public boolean hasSignature() {
+    public boolean hasSenderDevice() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional bytes signature = 2;</code>
+     * <code>optional uint32 senderDevice = 2;</code>
      */
-    public com.google.protobuf.ByteString getSignature() {
-      return signature_;
+    public int getSenderDevice() {
+      return senderDevice_;
     }
 
     private void initFields() {
-      certificate_ = com.google.protobuf.ByteString.EMPTY;
-      signature_ = com.google.protobuf.ByteString.EMPTY;
+      sender_ = "";
+      senderDevice_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2053,10 +1176,10 @@ public final class SignalProtos {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, certificate_);
+        output.writeBytes(1, getSenderBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, signature_);
+        output.writeUInt32(2, senderDevice_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -2069,11 +1192,11 @@ public final class SignalProtos {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, certificate_);
+          .computeBytesSize(1, getSenderBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, signature_);
+          .computeUInt32Size(2, senderDevice_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2191,9 +1314,9 @@ public final class SignalProtos {
 
       public Builder clear() {
         super.clear();
-        certificate_ = com.google.protobuf.ByteString.EMPTY;
+        sender_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        signature_ = com.google.protobuf.ByteString.EMPTY;
+        senderDevice_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
@@ -2226,11 +1349,11 @@ public final class SignalProtos {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.certificate_ = certificate_;
+        result.sender_ = sender_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.signature_ = signature_;
+        result.senderDevice_ = senderDevice_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2247,11 +1370,13 @@ public final class SignalProtos {
 
       public Builder mergeFrom(org.signal.libsignal.metadata.SignalProtos.SenderCertificate other) {
         if (other == org.signal.libsignal.metadata.SignalProtos.SenderCertificate.getDefaultInstance()) return this;
-        if (other.hasCertificate()) {
-          setCertificate(other.getCertificate());
+        if (other.hasSender()) {
+          bitField0_ |= 0x00000001;
+          sender_ = other.sender_;
+          onChanged();
         }
-        if (other.hasSignature()) {
-          setSignature(other.getSignature());
+        if (other.hasSenderDevice()) {
+          setSenderDevice(other.getSenderDevice());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2280,74 +1405,109 @@ public final class SignalProtos {
       }
       private int bitField0_;
 
-      // optional bytes certificate = 1;
-      private com.google.protobuf.ByteString certificate_ = com.google.protobuf.ByteString.EMPTY;
+      // optional string sender = 1;
+      private java.lang.Object sender_ = "";
       /**
-       * <code>optional bytes certificate = 1;</code>
+       * <code>optional string sender = 1;</code>
        */
-      public boolean hasCertificate() {
+      public boolean hasSender() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional bytes certificate = 1;</code>
+       * <code>optional string sender = 1;</code>
        */
-      public com.google.protobuf.ByteString getCertificate() {
-        return certificate_;
+      public java.lang.String getSender() {
+        java.lang.Object ref = sender_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          sender_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>optional bytes certificate = 1;</code>
+       * <code>optional string sender = 1;</code>
        */
-      public Builder setCertificate(com.google.protobuf.ByteString value) {
+      public com.google.protobuf.ByteString
+          getSenderBytes() {
+        java.lang.Object ref = sender_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sender_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string sender = 1;</code>
+       */
+      public Builder setSender(
+          java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-        certificate_ = value;
+        sender_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bytes certificate = 1;</code>
+       * <code>optional string sender = 1;</code>
        */
-      public Builder clearCertificate() {
+      public Builder clearSender() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        certificate_ = getDefaultInstance().getCertificate();
+        sender_ = getDefaultInstance().getSender();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string sender = 1;</code>
+       */
+      public Builder setSenderBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        sender_ = value;
         onChanged();
         return this;
       }
 
-      // optional bytes signature = 2;
-      private com.google.protobuf.ByteString signature_ = com.google.protobuf.ByteString.EMPTY;
+      // optional uint32 senderDevice = 2;
+      private int senderDevice_ ;
       /**
-       * <code>optional bytes signature = 2;</code>
+       * <code>optional uint32 senderDevice = 2;</code>
        */
-      public boolean hasSignature() {
+      public boolean hasSenderDevice() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional bytes signature = 2;</code>
+       * <code>optional uint32 senderDevice = 2;</code>
        */
-      public com.google.protobuf.ByteString getSignature() {
-        return signature_;
+      public int getSenderDevice() {
+        return senderDevice_;
       }
       /**
-       * <code>optional bytes signature = 2;</code>
+       * <code>optional uint32 senderDevice = 2;</code>
        */
-      public Builder setSignature(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        signature_ = value;
+      public Builder setSenderDevice(int value) {
+        bitField0_ |= 0x00000002;
+        senderDevice_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bytes signature = 2;</code>
+       * <code>optional uint32 senderDevice = 2;</code>
        */
-      public Builder clearSignature() {
+      public Builder clearSenderDevice() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        signature_ = getDefaultInstance().getSignature();
+        senderDevice_ = 0;
         onChanged();
         return this;
       }
@@ -2670,6 +1830,10 @@ public final class SignalProtos {
          * <code>MESSAGE = 2;</code>
          */
         MESSAGE(1, 2),
+        /**
+         * <code>LOKI_FRIEND_REQUEST = 3;</code>
+         */
+        LOKI_FRIEND_REQUEST(2, 3),
         ;
 
         /**
@@ -2680,6 +1844,10 @@ public final class SignalProtos {
          * <code>MESSAGE = 2;</code>
          */
         public static final int MESSAGE_VALUE = 2;
+        /**
+         * <code>LOKI_FRIEND_REQUEST = 3;</code>
+         */
+        public static final int LOKI_FRIEND_REQUEST_VALUE = 3;
 
 
         public final int getNumber() { return value; }
@@ -2688,6 +1856,7 @@ public final class SignalProtos {
           switch (value) {
             case 1: return PREKEY_MESSAGE;
             case 2: return MESSAGE;
+            case 3: return LOKI_FRIEND_REQUEST;
             default: return null;
           }
         }
@@ -3709,11 +2878,6 @@ public final class SignalProtos {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_signal_SenderCertificate_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_signal_SenderCertificate_Certificate_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_signal_SenderCertificate_Certificate_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_signal_UnidentifiedSenderMessage_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -3735,20 +2899,17 @@ public final class SignalProtos {
       "\n\032UnidentifiedDelivery.proto\022\006signal\"c\n\021" +
       "ServerCertificate\022\023\n\013certificate\030\001 \001(\014\022\021" +
       "\n\tsignature\030\002 \001(\014\032&\n\013Certificate\022\n\n\002id\030\001" +
-      " \001(\r\022\013\n\003key\030\002 \001(\014\"\302\001\n\021SenderCertificate\022" +
-      "\023\n\013certificate\030\001 \001(\014\022\021\n\tsignature\030\002 \001(\014\032" +
-      "\204\001\n\013Certificate\022\016\n\006sender\030\001 \001(\t\022\024\n\014sende" +
-      "rDevice\030\002 \001(\r\022\017\n\007expires\030\003 \001(\006\022\023\n\013identi" +
-      "tyKey\030\004 \001(\014\022)\n\006signer\030\005 \001(\0132\031.signal.Ser" +
-      "verCertificate\"\241\002\n\031UnidentifiedSenderMes" +
-      "sage\022\027\n\017ephemeralPublic\030\001 \001(\014\022\027\n\017encrypt",
-      "edStatic\030\002 \001(\014\022\030\n\020encryptedMessage\030\003 \001(\014" +
-      "\032\267\001\n\007Message\022<\n\004type\030\001 \001(\0162..signal.Unid" +
-      "entifiedSenderMessage.Message.Type\0224\n\021se" +
-      "nderCertificate\030\002 \001(\0132\031.signal.SenderCer" +
-      "tificate\022\017\n\007content\030\003 \001(\014\"\'\n\004Type\022\022\n\016PRE" +
-      "KEY_MESSAGE\020\001\022\013\n\007MESSAGE\020\002B-\n\035org.signal" +
-      ".libsignal.metadataB\014SignalProtos"
+      " \001(\r\022\013\n\003key\030\002 \001(\014\"9\n\021SenderCertificate\022\016" +
+      "\n\006sender\030\001 \001(\t\022\024\n\014senderDevice\030\002 \001(\r\"\272\002\n" +
+      "\031UnidentifiedSenderMessage\022\027\n\017ephemeralP" +
+      "ublic\030\001 \001(\014\022\027\n\017encryptedStatic\030\002 \001(\014\022\030\n\020" +
+      "encryptedMessage\030\003 \001(\014\032\320\001\n\007Message\022<\n\004ty" +
+      "pe\030\001 \001(\0162..signal.UnidentifiedSenderMess" +
+      "age.Message.Type\0224\n\021senderCertificate\030\002 ",
+      "\001(\0132\031.signal.SenderCertificate\022\017\n\007conten" +
+      "t\030\003 \001(\014\"@\n\004Type\022\022\n\016PREKEY_MESSAGE\020\001\022\013\n\007M" +
+      "ESSAGE\020\002\022\027\n\023LOKI_FRIEND_REQUEST\020\003B-\n\035org" +
+      ".signal.libsignal.metadataB\014SignalProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -3772,13 +2933,7 @@ public final class SignalProtos {
           internal_static_signal_SenderCertificate_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_signal_SenderCertificate_descriptor,
-              new java.lang.String[] { "Certificate", "Signature", });
-          internal_static_signal_SenderCertificate_Certificate_descriptor =
-            internal_static_signal_SenderCertificate_descriptor.getNestedTypes().get(0);
-          internal_static_signal_SenderCertificate_Certificate_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_signal_SenderCertificate_Certificate_descriptor,
-              new java.lang.String[] { "Sender", "SenderDevice", "Expires", "IdentityKey", "Signer", });
+              new java.lang.String[] { "Sender", "SenderDevice", });
           internal_static_signal_UnidentifiedSenderMessage_descriptor =
             getDescriptor().getMessageTypes().get(2);
           internal_static_signal_UnidentifiedSenderMessage_fieldAccessorTable = new

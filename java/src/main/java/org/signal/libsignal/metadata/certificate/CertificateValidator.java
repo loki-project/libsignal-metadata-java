@@ -22,19 +22,8 @@ public class CertificateValidator {
   }
 
   public void validate(SenderCertificate certificate, long validationTime) throws InvalidCertificateException {
-    try {
-      ServerCertificate serverCertificate = certificate.getSigner();
-      validate(serverCertificate);
-
-      if (!Curve.verifySignature(serverCertificate.getKey(), certificate.getCertificate(), certificate.getSignature())) {
-        throw new InvalidCertificateException("Signature failed");
-      }
-
-      if (validationTime > certificate.getExpiration()) {
-        throw new InvalidCertificateException("Certificate is expired");
-      }
-    } catch (InvalidKeyException e) {
-      throw new InvalidCertificateException(e);
+    if (certificate.getSender() == null || certificate.getSenderDeviceId() <= 0) {
+      throw new InvalidCertificateException("Sender or sender device id is invalid");
     }
   }
 

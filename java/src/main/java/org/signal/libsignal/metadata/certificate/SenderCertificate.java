@@ -11,76 +11,40 @@ import org.whispersystems.libsignal.ecc.ECPublicKey;
 
 public class SenderCertificate {
 
-  private final ServerCertificate signer;
-  private final ECPublicKey       key;
   private final int               senderDeviceId;
   private final String            sender;
-  private final long              expiration;
 
   private final byte[] serialized;
   private final byte[] certificate;
-  private final byte[] signature;
 
   public SenderCertificate(byte[] serialized) throws InvalidCertificateException {
     try {
-      SignalProtos.SenderCertificate wrapper = SignalProtos.SenderCertificate.parseFrom(serialized);
+      SignalProtos.SenderCertificate certificate = SignalProtos.SenderCertificate.parseFrom(serialized);
 
-      if (!wrapper.hasSignature() || !wrapper.hasCertificate()) {
+      if (!certificate.hasSenderDevice() || !certificate.hasSender()) {
         throw new InvalidCertificateException("Missing fields");
       }
 
-      SignalProtos.SenderCertificate.Certificate certificate = SignalProtos.SenderCertificate.Certificate.parseFrom(wrapper.getCertificate());
-
-      if (!certificate.hasSigner() || !certificate.hasIdentityKey() || !certificate.hasSenderDevice() || !certificate.hasExpires() || !certificate.hasSender()) {
-        throw new InvalidCertificateException("Missing fields");
-      }
-
-      this.signer         = new ServerCertificate(certificate.getSigner().toByteArray());
-      this.key            = Curve.decodePoint(certificate.getIdentityKey().toByteArray(), 0);
       this.sender         = certificate.getSender();
       this.senderDeviceId = certificate.getSenderDevice();
-      this.expiration     = certificate.getExpires();
 
-      this.serialized  = serialized;
-      this.certificate = wrapper.getCertificate().toByteArray();
-      this.signature   = wrapper.getSignature().toByteArray();
+      this.serialized = serialized;
+      this.certificate = certificate.toByteArray();
 
     } catch (InvalidProtocolBufferException e) {
       throw new InvalidCertificateException(e);
-    } catch (InvalidKeyException e) {
-      throw new InvalidCertificateException(e);
     }
-  }
-
-  public ServerCertificate getSigner() {
-    return signer;
-  }
-
-  public ECPublicKey getKey() {
-    return key;
   }
 
   public int getSenderDeviceId() {
     return senderDeviceId;
   }
 
-  public String getSender() {
-    return sender;
-  }
-
-  public long getExpiration() {
-    return expiration;
-  }
-
-  public byte[] getSerialized() {
-    return serialized;
-  }
+  public String getSender() { return sender; }
 
   public byte[] getCertificate() {
     return certificate;
   }
 
-  public byte[] getSignature() {
-    return signature;
-  }
+  public byte[] getSerialized() { return serialized; }
 }

@@ -23,6 +23,7 @@ import org.whispersystems.libsignal.ecc.ECKeyPair;
 import org.whispersystems.libsignal.ecc.ECPrivateKey;
 import org.whispersystems.libsignal.ecc.ECPublicKey;
 import org.whispersystems.libsignal.kdf.HKDFv3;
+import org.whispersystems.libsignal.loki.FallbackSessionCipher;
 import org.whispersystems.libsignal.protocol.CiphertextMessage;
 import org.whispersystems.libsignal.protocol.PreKeySignalMessage;
 import org.whispersystems.libsignal.protocol.SignalMessage;
@@ -58,24 +59,34 @@ public class SealedSessionCipher {
   public byte[] encrypt(SignalProtocolAddress destinationAddress, SenderCertificate senderCertificate, byte[] paddedPlaintext)
       throws InvalidKeyException, UntrustedIdentityException
   {
-    CiphertextMessage message       = new SessionCipher(signalProtocolStore, destinationAddress).encrypt(paddedPlaintext);
-    IdentityKeyPair   ourIdentity   = signalProtocolStore.getIdentityKeyPair();
-    ECPublicKey       theirIdentity = signalProtocolStore.getIdentity(destinationAddress).getPublicKey();
-
-    ECKeyPair     ephemeral           = Curve.generateKeyPair();
-    byte[]        ephemeralSalt       = ByteUtil.combine("UnidentifiedDelivery".getBytes(), theirIdentity.serialize(), ephemeral.getPublicKey().serialize());
-    EphemeralKeys ephemeralKeys       = calculateEphemeralKeys(theirIdentity, ephemeral.getPrivateKey(), ephemeralSalt);
-    byte[]        staticKeyCiphertext = encrypt(ephemeralKeys.cipherKey, ephemeralKeys.macKey, ourIdentity.getPublicKey().getPublicKey().serialize());
-
-    byte[]                           staticSalt   = ByteUtil.combine(ephemeralKeys.chainKey, staticKeyCiphertext);
-    StaticKeys                       staticKeys   = calculateStaticKeys(theirIdentity, ourIdentity.getPrivateKey(), staticSalt);
-    UnidentifiedSenderMessageContent content      = new UnidentifiedSenderMessageContent(message.getType(), senderCertificate, message.serialize());
-    byte[]                           messageBytes = encrypt(staticKeys.cipherKey, staticKeys.macKey, content.getSerialized());
-
-    return new UnidentifiedSenderMessage(ephemeral.getPublicKey(), staticKeyCiphertext, messageBytes).getSerialized();
+    CiphertextMessage message = new SessionCipher(signalProtocolStore, destinationAddress).encrypt(paddedPlaintext);
+    return encrypt(destinationAddress, senderCertificate, message);
   }
 
-  public Pair<SignalProtocolAddress, byte[]> decrypt(CertificateValidator validator, byte[] ciphertext, long timestamp)
+  public byte[] encrypt(SignalProtocolAddress destinationAddress, SenderCertificate senderCertificate, CiphertextMessage message)
+      throws InvalidKeyException
+  {
+      IdentityKeyPair   ourIdentity   = signalProtocolStore.getIdentityKeyPair();
+      ECPublicKey       theirIdentity = signalProtocolStore.getIdentity(destinationAddress).getPublicKey();
+
+      ECKeyPair     ephemeral           = Curve.generateKeyPair();
+      byte[]        ephemeralSalt       = ByteUtil.combine("UnidentifiedDelivery".getBytes(), theirIdentity.serialize(), ephemeral.getPublicKey().serialize());
+      EphemeralKeys ephemeralKeys       = calculateEphemeralKeys(theirIdentity, ephemeral.getPrivateKey(), ephemeralSalt);
+      byte[]        staticKeyCiphertext = encrypt(ephemeralKeys.cipherKey, ephemeralKeys.macKey, ourIdentity.getPublicKey().getPublicKey().serialize());
+
+      byte[]                           staticSalt   = ByteUtil.combine(ephemeralKeys.chainKey, staticKeyCiphertext);
+      StaticKeys                       staticKeys   = calculateStaticKeys(theirIdentity, ourIdentity.getPrivateKey(), staticSalt);
+      UnidentifiedSenderMessageContent content      = new UnidentifiedSenderMessageContent(message.getType(), senderCertificate, message.serialize());
+      byte[]                           messageBytes = encrypt(staticKeys.cipherKey, staticKeys.macKey, content.getSerialized());
+
+      return new UnidentifiedSenderMessage(ephemeral.getPublicKey(), staticKeyCiphertext, messageBytes).getSerialized();
+  }
+
+  /**
+   * Decrypt a sealed session message.
+   * This will return a Pair<Integer, byte[]> which is the CipherTextMessage type and the decrypted message content
+   */
+  public Pair<SignalProtocolAddress, Pair<Integer, byte[]>> decrypt(CertificateValidator validator, byte[] ciphertext, long timestamp)
       throws
       InvalidMetadataMessageException, InvalidMetadataVersionException,
       ProtocolInvalidMessageException, ProtocolInvalidKeyException,
@@ -101,10 +112,6 @@ public class SealedSessionCipher {
       content = new UnidentifiedSenderMessageContent(messageBytes);
       validator.validate(content.getSenderCertificate(), timestamp);
 
-      if (!MessageDigest.isEqual(content.getSenderCertificate().getKey().serialize(), staticKeyBytes)) {
-        throw new InvalidKeyException("Sender's certificate key does not match key used in message");
-      }
-
       if (content.getSenderCertificate().getSender().equals(localAddress.getName()) &&
           content.getSenderCertificate().getSenderDeviceId() == localAddress.getDeviceId())
       {
@@ -119,9 +126,11 @@ public class SealedSessionCipher {
     }
 
     try {
-      return new Pair<SignalProtocolAddress, byte[]>(new SignalProtocolAddress(content.getSenderCertificate().getSender(),
-                                                  content.getSenderCertificate().getSenderDeviceId()),
-                        decrypt(content));
+      Pair<Integer, byte[]> dataPair = new Pair<Integer, byte[]>(content.getType(), decrypt(content));
+      return new Pair<SignalProtocolAddress, Pair<Integer, byte[]>>(
+              new SignalProtocolAddress(content.getSenderCertificate().getSender(), content.getSenderCertificate().getSenderDeviceId()),
+              dataPair
+      );
     } catch (InvalidMessageException e) {
       throw new ProtocolInvalidMessageException(e, content.getSenderCertificate().getSender(), content.getSenderCertificate().getSenderDeviceId());
     } catch (InvalidKeyException e) {
@@ -182,6 +191,14 @@ public class SealedSessionCipher {
     switch (message.getType()) {
       case CiphertextMessage.WHISPER_TYPE: return new SessionCipher(signalProtocolStore, sender).decrypt(new SignalMessage(message.getContent()));
       case CiphertextMessage.PREKEY_TYPE:  return new SessionCipher(signalProtocolStore, sender).decrypt(new PreKeySignalMessage(message.getContent()));
+      case CiphertextMessage.LOKI_FRIEND_REQUEST_TYPE: {
+        try {
+          byte[] privateKey = signalProtocolStore.getIdentityKeyPair().getPrivateKey().serialize();
+          return new FallbackSessionCipher(privateKey, sender.getName()).decrypt(message.getContent());
+        } catch (Exception e) {
+          throw new InvalidMessageException("Failed to decrypt friend request message.");
+        }
+      }
       default:                             throw new InvalidMessageException("Unknown type: " + message.getType());
     }
   }
